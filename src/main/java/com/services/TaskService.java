@@ -67,7 +67,8 @@ public class TaskService {
 
         return tasks.stream()
                 .filter(t -> matches(t, q))
-                .sorted(this::compareTasks) // Usa lógica de ordenação inteligente
+                // ALTERAÇÃO AQUI: Ordena estritamente pelo ID (Crescente)
+                .sorted((t1, t2) -> Integer.compare(t1.getId(), t2.getId()))
                 .collect(Collectors.toList());
     }
 
