@@ -1,1 +1,0 @@
-SIMPLE;0;Limpar Casa;null;false

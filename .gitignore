@@ -34,5 +34,7 @@ build/
 ### VS Code ###
 .vscode/
 
+tarefas.txt
+
 ### Mac OS ###
 .DS_Store
