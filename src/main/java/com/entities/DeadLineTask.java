@@ -1,12 +1,8 @@
 package com.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Getter
-@Setter
 public class DeadLineTask extends Task {
     private LocalDateTime prazo;
 
@@ -15,19 +11,21 @@ public class DeadLineTask extends Task {
         this.prazo = prazo;
     }
 
+    public DeadLineTask(String title, String description, LocalDateTime prazo) {
+        super(title, description);
+        this.prazo = prazo;
+    }
+
+    public LocalDateTime getPrazo() { return prazo; }
+
     @Override
     public String getStatusTempo() {
-        if(isCompleted()){
-            return "Concluida";
-        }
-        LocalDateTime now = LocalDateTime.now();
-        if(now.isBefore(prazo)){
-            return "No prazo";
-        } return "Atrasada";
+        if (isCompleted()) return "Concluída";
+        return LocalDateTime.now().isAfter(prazo) ? "Atrasada" : "No prazo";
     }
 
     @Override
     public String toFileString() {
-        return "DeadLine;" + getId() + ";" + getTitle() + ";" + getDescription()  + ";" + isCompleted() + ";" + this.prazo.toString() + ";";
+        return "DEADLINE;" + getId() + ";" + getTitle() + ";" + getDescription() + ";" + isCompleted() + ";" + prazo.toString();
     }
 }

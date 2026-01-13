@@ -3,8 +3,7 @@ package com.repository;
 import com.entities.Task;
 import com.factory.TaskFactory;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FileTaskRepository {
     private final String fileName = "tarefas.txt";
@@ -23,25 +22,19 @@ public class FileTaskRepository {
                 writer.write(t.toFileString());
                 writer.newLine();
             }
-        } catch (IOException e) {
-            System.err.println("Erro ao salvar: " + e.getMessage());
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     public List<Task> loadAll() {
         List<Task> tasks = new ArrayList<>();
         File file = new File(fileName);
-
         if (!file.exists()) return tasks;
-
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 tasks.add(TaskFactory.createFromLine(line));
             }
-        } catch (IOException e) {
-            System.err.println("Erro ao carregar: " + e.getMessage());
-        }
+        } catch (IOException e) { e.printStackTrace(); }
         return tasks;
     }
 }
