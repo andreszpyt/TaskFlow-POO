@@ -6,42 +6,30 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class TaskService {
-    private final FileTaskRepository repository = FileTaskRepository.getInstance();
-    private List<Task> taskList = repository.loadAll();
+    private final FileTaskRepository repo = FileTaskRepository.getInstance();
+    private List<Task> tasks = repo.loadAll();
 
-    public void addTask(Task task) throws TaskValidationException {
-        if (task instanceof DeadLineTask dt && dt.getPrazo().isBefore(LocalDateTime.now())) {
-            throw new TaskValidationException("Erro: O prazo não pode ser no passado!");
-        }
-        taskList.add(task);
-        repository.saveAll(taskList);
+    public void addTask(Task t) throws TaskValidationException {
+        if (t instanceof DeadLineTask dt && dt.getPrazo().isBefore(LocalDateTime.now()))
+            throw new TaskValidationException("O prazo não pode ser no passado!");
+        tasks.add(t);
+        repo.saveAll(tasks);
     }
-
     public void deleteTask(int id) {
-        taskList.removeIf(t -> t.getId() == id);
-        repository.saveAll(taskList);
+        tasks.removeIf(t -> t.getId() == id);
+        repo.saveAll(tasks);
     }
-
     public void toggleTask(int id) {
-        taskList.stream().filter(t -> t.getId() == id).findFirst().ifPresent(t -> t.setCompleted(!t.isCompleted()));
-        repository.saveAll(taskList);
+        tasks.stream().filter(t -> t.getId() == id).findFirst().ifPresent(t -> t.setCompleted(!t.isCompleted()));
+        repo.saveAll(tasks);
     }
-
-    public List<Task> getSortedTasks() {
-        taskList.sort((t1, t2) -> {
-            if (t1 instanceof DeadLineTask d1 && t2 instanceof DeadLineTask d2) return d1.getPrazo().compareTo(d2.getPrazo());
-            if (t1 instanceof DeadLineTask) return -1;
-            if (t2 instanceof DeadLineTask) return 1;
-            return Integer.compare(t1.getId(), t2.getId());
-        });
-        return taskList;
-    }
-    public List<Task> searchTasks(String query) {
-        if (query == null || query.isBlank()) return getSortedTasks();
-        String q = query.toLowerCase();
-        return getSortedTasks().stream()
-                .filter(t -> t.getTitle().toLowerCase().contains(q) ||
-                        t.getDescription().toLowerCase().contains(q))
-                .toList();
+    public List<Task> search(String q) {
+        String query = q == null ? "" : q.toLowerCase();
+        return tasks.stream()
+                .filter(t -> t.getTitle().toLowerCase().contains(query) || t.getDescription().toLowerCase().contains(query))
+                .sorted((t1, t2) -> {
+                    if (t1 instanceof DeadLineTask d1 && t2 instanceof DeadLineTask d2) return d1.getPrazo().compareTo(d2.getPrazo());
+                    return t1 instanceof DeadLineTask ? -1 : 1;
+                }).toList();
     }
 }

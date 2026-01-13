@@ -5,16 +5,12 @@ import java.time.LocalDateTime;
 
 public class TaskFactory {
     public static Task createFromLine(String line) {
-        String[] parts = line.split(";");
-        String type = parts[0];
-        int id = Integer.parseInt(parts[1]);
-        String title = parts[2];
-        String desc = parts[3];
-        boolean done = Boolean.parseBoolean(parts[4]);
-
-        if (type.equalsIgnoreCase("DEADLINE")) {
-            return new DeadLineTask(id, title, desc, done, LocalDateTime.parse(parts[5]));
+        String[] p = line.split(";");
+        int id = Integer.parseInt(p[1]);
+        boolean done = Boolean.parseBoolean(p[4]);
+        if (p[0].equalsIgnoreCase("DEADLINE")) {
+            return new DeadLineTask(id, p[2], p[3], done, LocalDateTime.parse(p[5]));
         }
-        return new SimpleTask(id, title, desc, done);
+        return new SimpleTask(id, p[2], p[3], done);
     }
 }
