@@ -36,4 +36,12 @@ public class TaskService {
         });
         return taskList;
     }
+    public List<Task> searchTasks(String query) {
+        if (query == null || query.isBlank()) return getSortedTasks();
+        String q = query.toLowerCase();
+        return getSortedTasks().stream()
+                .filter(t -> t.getTitle().toLowerCase().contains(q) ||
+                        t.getDescription().toLowerCase().contains(q))
+                .toList();
+    }
 }
