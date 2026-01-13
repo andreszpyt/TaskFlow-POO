@@ -9,6 +9,10 @@ public class SimpleTask extends Task {
         super(id, title, desc, done);
     }
 
+    public SimpleTask(String title) {
+        super(title);
+    }
+
     @Override
     public String getStatusTempo() {
         if (isCompleted()) {
