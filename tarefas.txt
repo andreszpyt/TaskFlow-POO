@@ -1,1 +1,2 @@
-DEADLINE;4;iiiiiiiiiiiiii;iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii;false;2026-01-13T02:37
+DEADLINE;9;Comer o Lucas;Comer o Lucas;false;2026-01-13T04:41
+DEADLINE;11;Entregar o trabalho do Enyo;Entregar o trabalho de POO até às 08:00;false;2026-01-13T07:59
