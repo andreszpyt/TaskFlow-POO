@@ -14,6 +14,8 @@ public class DeadLineTask extends Task {
         this.prazo = prazo;
     }
     public LocalDateTime getPrazo() { return prazo; }
+    public void setPrazo(LocalDateTime prazo) { this.prazo = prazo; }
+
     @Override
     public String getStatusTempo() {
         if (isCompleted()) return "Concluída";

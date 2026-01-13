@@ -10,19 +10,37 @@ public class TaskService {
     private List<Task> tasks = repo.loadAll();
 
     public void addTask(Task t) throws TaskValidationException {
-        if (t instanceof DeadLineTask dt && dt.getPrazo().isBefore(LocalDateTime.now()))
-            throw new TaskValidationException("O prazo não pode ser no passado!");
+        validateDeadline(t);
         tasks.add(t);
         repo.saveAll(tasks);
     }
+
+    public void updateTask(Task updatedTask) throws TaskValidationException {
+        validateDeadline(updatedTask);
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId() == updatedTask.getId()) {
+                tasks.set(i, updatedTask);
+                break;
+            }
+        }
+        repo.saveAll(tasks);
+    }
+
+    private void validateDeadline(Task t) throws TaskValidationException {
+        if (t instanceof DeadLineTask dt && dt.getPrazo().isBefore(LocalDateTime.now()) && !dt.isCompleted())
+            throw new TaskValidationException("O prazo não pode ser no passado!");
+    }
+
     public void deleteTask(int id) {
         tasks.removeIf(t -> t.getId() == id);
         repo.saveAll(tasks);
     }
+
     public void toggleTask(int id) {
         tasks.stream().filter(t -> t.getId() == id).findFirst().ifPresent(t -> t.setCompleted(!t.isCompleted()));
         repo.saveAll(tasks);
     }
+
     public List<Task> search(String q) {
         String query = q == null ? "" : q.toLowerCase();
         return tasks.stream()
