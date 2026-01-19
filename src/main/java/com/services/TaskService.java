@@ -16,10 +16,9 @@ public class TaskService {
 
     public void addTask(Task t) throws TaskValidationException {
         // Validação leve: Só impede datas passadas na CRIAÇÃO de novas tarefas
-        // (Se quiser permitir criar tarefas retroativas, remova essa linha)
         validateCreation(t);
 
-        // Gera um ID novo se for 0 (caso seu repo não faça isso)
+        // Gera um ID novo se for 0
         if (t.getId() == 0) {
             int maxId = tasks.stream().mapToInt(Task::getId).max().orElse(0);
             t.setId(maxId + 1);
@@ -30,8 +29,7 @@ public class TaskService {
     }
 
     public void updateTask(Task updatedTask) {
-        // Na edição, não validamos data passada, pois o usuário pode estar
-        // apenas corrigindo o texto de uma tarefa que já venceu.
+        // Na edição, não validamos data passada, pois o usuário pode estar apenas corrigindo o texto de uma tarefa que já venceu.
 
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).getId() == updatedTask.getId()) {
